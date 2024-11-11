@@ -1,32 +1,30 @@
-# Lowest Common Ancestor of a Binary Tree IV
-# 
-# Given the root of a binary tree and a list of nodes, return the lowest 
-# common ancestor (LCA) of all the nodes in the list.
-# 
-# The LCA of multiple nodes in a tree is the lowest node that has all nodes 
-# as descendants, where we allow a node to be a descendant of itself.
-# 
-# Constraints:
-# - The number of nodes in the tree is in the range [1, 10^4].
-# - The number of nodes in the list is in the range [1, 10^4].
-# - All Node.val are unique.
-# - All nodes in the list are distinct.
-
 # Definition for a binary tree node.
 class TreeNode:
-    def __init__(self, x):
-        self.val = x
-        self.left = None
-        self.right = None
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
 
 class Solution:
-    def lowestCommonAncestor(self, root: 'TreeNode', nodes: 'List[TreeNode]') -> 'TreeNode':
-        # Fill in your solution here
+    def lowestCommonAncestor(self, root: TreeNode, nodes: list[TreeNode]) -> TreeNode:
+        # Implement your solution here
         pass
 
-# Test cases
-def test():
-    # Tree setup
+# Helper function to find nodes based on values
+def find_nodes(root, values):
+    result = []
+    def dfs(node):
+        if node:
+            if node.val in values:
+                result.append(node)
+            dfs(node.left)
+            dfs(node.right)
+    dfs(root)
+    return result
+
+# Test Cases
+if __name__ == "__main__":
+    # Creating a sample tree
     root = TreeNode(3)
     root.left = TreeNode(5)
     root.right = TreeNode(1)
@@ -36,14 +34,16 @@ def test():
     root.right.right = TreeNode(8)
     root.left.right.left = TreeNode(7)
     root.left.right.right = TreeNode(4)
-
-    nodes = [root.left, root.left.right.right, root.right]
-    solution = Solution()
-    assert solution.lowestCommonAncestor(root, nodes) == root, "Test case 1 failed"
-
-    nodes = [root.left.left, root.left.right.left, root.left.right.right]
-    assert solution.lowestCommonAncestor(root, nodes) == root.left, "Test case 2 failed"
-
-    print("All test cases pass for LCA IV")
-
-test()
+    
+    # Instantiate solution
+    sol = Solution()
+    
+    # Test cases
+    nodes = find_nodes(root, [5, 1])
+    print(sol.lowestCommonAncestor(root, nodes).val)  # Expected output: 3
+    
+    nodes = find_nodes(root, [5, 4, 7])
+    print(sol.lowestCommonAncestor(root, nodes).val)  # Expected output: 5
+    
+    nodes = find_nodes(root, [6, 7, 4])
+    print(sol.lowestCommonAncestor(root, nodes).val)  # Expected output: 5
